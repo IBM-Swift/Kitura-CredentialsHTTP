@@ -54,7 +54,11 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
         self.realm = realm ?? "Users"
     }
     
-    public func authenticate (request: RouterRequest, response: RouterResponse, options: [String:OptionValue], onSuccess: (UserProfile) -> Void, onFailure: (HTTPStatusCode?, [String:String]?) -> Void, onPass: (HTTPStatusCode?, [String:String]?) -> Void, inProgress: () -> Void)  {
+    public func authenticate (request: RouterRequest, response: RouterResponse,
+                              options: [String:Any], onSuccess: (UserProfile) -> Void,
+                              onFailure: (HTTPStatusCode?, [String:String]?) -> Void,
+                              onPass: (HTTPStatusCode?, [String:String]?) -> Void,
+                              inProgress: () -> Void)  {
         
         guard request.headers["Authorization"] != nil, let authorizationHeader = request.headers["Authorization"], authorizationHeader.hasPrefix("Digest") else {
             onPass(.unauthorized, createHeaders())
@@ -88,7 +92,7 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
             }
         }
         
-        userProfileLoader(userId: userid) { userProfile, password in
+        userProfileLoader(userid) { userProfile, password in
             guard let userProfile = userProfile, let password = password else {
                 onFailure(.unauthorized, self.createHeaders())
                 return
