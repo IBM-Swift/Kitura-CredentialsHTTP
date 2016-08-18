@@ -46,10 +46,10 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
     }
     
     public func authenticate (request: RouterRequest, response: RouterResponse,
-                              options: [String:Any], onSuccess: (UserProfile) -> Void,
-                              onFailure: (HTTPStatusCode?, [String:String]?) -> Void,
-                              onPass: (HTTPStatusCode?, [String:String]?) -> Void,
-                              inProgress: () -> Void)  {
+                              options: [String:Any], onSuccess: @escaping (UserProfile) -> Void,
+                              onFailure: @escaping (HTTPStatusCode?, [String:String]?) -> Void,
+                              onPass: @escaping (HTTPStatusCode?, [String:String]?) -> Void,
+                              inProgress: @escaping () -> Void)  {
         
         var authorization : String
         if let userinfo = request.parsedURL.userinfo {

@@ -55,10 +55,10 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
     }
     
     public func authenticate (request: RouterRequest, response: RouterResponse,
-                              options: [String:Any], onSuccess: (UserProfile) -> Void,
-                              onFailure: (HTTPStatusCode?, [String:String]?) -> Void,
-                              onPass: (HTTPStatusCode?, [String:String]?) -> Void,
-                              inProgress: () -> Void)  {
+                              options: [String:Any], onSuccess: @escaping (UserProfile) -> Void,
+                              onFailure: @escaping (HTTPStatusCode?, [String:String]?) -> Void,
+                              onPass: @escaping (HTTPStatusCode?, [String:String]?) -> Void,
+                              inProgress: @escaping () -> Void)  {
         
         guard request.headers["Authorization"] != nil, let authorizationHeader = request.headers["Authorization"], authorizationHeader.hasPrefix("Digest") else {
             onPass(.unauthorized, createHeaders())
