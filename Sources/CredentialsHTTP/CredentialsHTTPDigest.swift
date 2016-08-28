@@ -32,11 +32,7 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
         return false
     }
     
-    #if os(OSX)
     public var usersCache : NSCache<NSString, BaseCacheElement>?
-    #else
-    public var usersCache : Cache?
-    #endif
     
     private var userProfileLoader : UserProfileLoader
     
@@ -48,7 +44,7 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
     
     private let algorithm = "MD5"
     
-    public init (userProfileLoader: UserProfileLoader, opaque: String?=nil, realm: String?=nil) {
+    public init (userProfileLoader: @escaping UserProfileLoader, opaque: String?=nil, realm: String?=nil) {
         self.userProfileLoader = userProfileLoader
         self.opaque = opaque ?? nil
         self.realm = realm ?? "Users"
