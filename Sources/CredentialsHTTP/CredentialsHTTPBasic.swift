@@ -20,27 +20,51 @@ import Credentials
 
 import Foundation
 
+// MARK CredentialsHTTPBasic
+
+/// HTTP Basic authentication.
 public class CredentialsHTTPBasic : CredentialsPluginProtocol {
     
+    /// The name of the plugin.
     public var name : String {
         return "HTTPBasic"
     }
     
+    /// An indication whether the plugin is redirecting or not.
     public var redirecting: Bool {
         return false
     }
-    
+
+    /// Caching of user profile information.
     public var usersCache : NSCache<NSString, BaseCacheElement>?
     
     private var userProfileLoader : UserProfileLoader
     
+    /// The authentication realm attribute.
     public var realm : String
     
+    /// Initialize a `CredentialsHTTPBasic`.
+    ///
+    /// - Parameter userProfileLoader: a callback for loading the user profile.
+    /// - Parameter realm: a realm attribute.
+    /// - Returns: an instance of `CredentialsHTTPBasic`.
     public init (userProfileLoader: @escaping UserProfileLoader, realm: String?=nil) {
         self.userProfileLoader = userProfileLoader
         self.realm = realm ?? "Users"
     }
     
+    /// Authenticate incoming request using HTTP Basic authentication.
+    ///
+    /// - Parameter request: the `RouterRequest` object used to get information
+    ///                     about the request.
+    /// - Parameter response: the `RouterResponse` object used to respond to the
+    ///                       request.
+    /// - Parameter options: a dictionary of plugin specific options.
+    /// - Parameter onSuccess: a closure to invoke in case of successful authentication.
+    /// - Parameter onFailure: a closure to invoke in case of authentication failure.
+    /// - Parameter onPass: a closure to invoke when the plugin doesn't recognize the
+    ///                     authentication data in the request.
+    /// - Parameter inProgress: a closure to invoke in the process of redirecting authentication.
     public func authenticate (request: RouterRequest, response: RouterResponse,
                               options: [String:Any], onSuccess: @escaping (UserProfile) -> Void,
                               onFailure: @escaping (HTTPStatusCode?, [String:String]?) -> Void,

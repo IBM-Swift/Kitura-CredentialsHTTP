@@ -16,4 +16,7 @@
 
 import Credentials
 
+// MARK UserProfileLoader
+
+/// Type alias for callback that loads user profile for given user ID (invoking the provided closure).
 public typealias UserProfileLoader = (String, (UserProfile?, String?)->Void) -> Void
