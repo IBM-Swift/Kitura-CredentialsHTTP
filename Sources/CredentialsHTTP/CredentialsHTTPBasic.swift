@@ -23,7 +23,7 @@ import Foundation
 // MARK CredentialsHTTPBasic
 
 /// Authenticate requests using HTTP Basic authentication.
-/// See [RFC 2617](https://tools.ietf.org/html/rfc2617) for details.
+/// See [RFC 7617](https://tools.ietf.org/html/rfc7617) for details.
 public class CredentialsHTTPBasic : CredentialsPluginProtocol {
     
     /// The name of the plugin.

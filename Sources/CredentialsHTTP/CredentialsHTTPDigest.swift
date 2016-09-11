@@ -25,7 +25,7 @@ import Foundation
 // MARK CredentialsHTTPDigest
 
 /// Authenticate requests using HTTP Digest authentication. 
-/// See [RFC 2617](https://tools.ietf.org/html/rfc2617) for details.
+/// See [RFC 7616](https://tools.ietf.org/html/rfc7616) for details.
 public class CredentialsHTTPDigest : CredentialsPluginProtocol {
     
     /// The name of the plugin.
