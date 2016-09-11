@@ -22,9 +22,10 @@ import Cryptor
 
 import Foundation
 
-// MARK CredentialsHTTPBasic
+// MARK CredentialsHTTPDigest
 
-/// HTTP Digest authentication.
+/// Authenticate requests using HTTP Digest authentication. 
+/// See [RFC 2617](https://tools.ietf.org/html/rfc2617) for details.
 public class CredentialsHTTPDigest : CredentialsPluginProtocol {
     
     /// The name of the plugin.
