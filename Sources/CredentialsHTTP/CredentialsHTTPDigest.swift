@@ -28,7 +28,7 @@ import Foundation
 public class CredentialsHTTPDigest : CredentialsPluginProtocol {
     
     /// The name of the plugin.
-    public var name : String {
+    public var name: String {
         return "HTTPDigest"
     }
     
@@ -38,21 +38,21 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
     }
     
     /// User profile cache.
-    public var usersCache : NSCache<NSString, BaseCacheElement>?
+    public var usersCache: NSCache<NSString, BaseCacheElement>?
     
-    private var userProfileLoader : UserProfileLoader
+    private var userProfileLoader: UserProfileLoader
     
     /// The authentication realm attribute.
-    public var realm : String
+    public var realm: String
     
     /// The opaque value (optional).
-    public var opaque : String?
+    public var opaque: String?
     
     private let qop = "auth"
     
     private let algorithm = "MD5"
     
-    /// Initialize a `CredentialsHTTPDigest`.
+    /// Initialize a `CredentialsHTTPDigest` instance.
     ///
     /// - Parameter userProfileLoader: The callback for loading the user profile.
     /// - Parameter realm: The opaque value.

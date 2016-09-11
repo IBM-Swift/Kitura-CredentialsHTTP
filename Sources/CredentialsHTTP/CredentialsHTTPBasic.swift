@@ -26,7 +26,7 @@ import Foundation
 public class CredentialsHTTPBasic : CredentialsPluginProtocol {
     
     /// The name of the plugin.
-    public var name : String {
+    public var name: String {
         return "HTTPBasic"
     }
     
@@ -36,14 +36,14 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
     }
 
     /// User profile cache.
-    public var usersCache : NSCache<NSString, BaseCacheElement>?
+    public var usersCache: NSCache<NSString, BaseCacheElement>?
     
-    private var userProfileLoader : UserProfileLoader
+    private var userProfileLoader: UserProfileLoader
     
     /// The authentication realm attribute.
-    public var realm : String
+    public var realm: String
     
-    /// Initialize a `CredentialsHTTPBasic`.
+    /// Initialize a `CredentialsHTTPBasic` instance.
     ///
     /// - Parameter userProfileLoader: The callback for loading the user profile.
     /// - Parameter realm: The realm attribute.
