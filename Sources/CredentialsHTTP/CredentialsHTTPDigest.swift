@@ -32,12 +32,12 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
         return "HTTPDigest"
     }
     
-    /// An indication whether the plugin is redirecting or not.
+    /// An indication as to whether the plugin is redirecting or not.
     public var redirecting: Bool {
         return false
     }
     
-    /// Caching of user profile information.
+    /// User profile cache.
     public var usersCache : NSCache<NSString, BaseCacheElement>?
     
     private var userProfileLoader : UserProfileLoader
@@ -45,7 +45,7 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
     /// The authentication realm attribute.
     public var realm : String
     
-    /// An optional opaque value.
+    /// The opaque value (optional).
     public var opaque : String?
     
     private let qop = "auth"
@@ -54,10 +54,9 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
     
     /// Initialize a `CredentialsHTTPDigest`.
     ///
-    /// - Parameter userProfileLoader: a callback for loading the user profile.
-    /// - Parameter realm: an opaque.
-    /// - Parameter realm: a realm attribute.
-    /// - Returns: an instance of `CredentialsHTTPDigest`.
+    /// - Parameter userProfileLoader: The callback for loading the user profile.
+    /// - Parameter realm: The opaque value.
+    /// - Parameter realm: The realm attribute.
     public init (userProfileLoader: @escaping UserProfileLoader, opaque: String?=nil, realm: String?=nil) {
         self.userProfileLoader = userProfileLoader
         self.opaque = opaque ?? nil
@@ -66,16 +65,17 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
     
     /// Authenticate incoming request using HTTP Digest authentication.
     ///
-    /// - Parameter request: the `RouterRequest` object used to get information
+    /// - Parameter request: The `RouterRequest` object used to get information
     ///                     about the request.
-    /// - Parameter response: the `RouterResponse` object used to respond to the
+    /// - Parameter response: The `RouterResponse` object used to respond to the
     ///                       request.
-    /// - Parameter options: a dictionary of plugin specific options.
-    /// - Parameter onSuccess: a closure to invoke in case of successful authentication.
-    /// - Parameter onFailure: a closure to invoke in case of authentication failure.
-    /// - Parameter onPass: a closure to invoke when the plugin doesn't recognize the
+    /// - Parameter options: The dictionary of plugin specific options.
+    /// - Parameter onSuccess: The closure to invoke in the case of successful authentication.
+    /// - Parameter onFailure: The closure to invoke in the case of an authentication failure.
+    /// - Parameter onPass: The closure to invoke when the plugin doesn't recognize the
     ///                     authentication data in the request.
-    /// - Parameter inProgress: a closure to invoke in the process of redirecting authentication.
+    /// - Parameter inProgress: The closure to invoke to cause a redirect to the login page in the
+    ///                     case of redirecting authentication.
     public func authenticate (request: RouterRequest, response: RouterResponse,
                               options: [String:Any], onSuccess: @escaping (UserProfile) -> Void,
                               onFailure: @escaping (HTTPStatusCode?, [String:String]?) -> Void,
