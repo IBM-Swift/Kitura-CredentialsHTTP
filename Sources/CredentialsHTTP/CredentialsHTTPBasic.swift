@@ -57,7 +57,7 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
 
     /// Initialize a `CredentialsHTTPBasic` instance.
     ///
-    /// - Parameter verifyPassword: The callback for loading the user profile.
+    /// - Parameter verifyPassword: The callback for verifying the password of the user.
     /// - Parameter realm: The realm attribute.
     public init (verifyPassword: @escaping VerifyPassword, realm: String?=nil) {
         self.verifyPassword = verifyPassword
