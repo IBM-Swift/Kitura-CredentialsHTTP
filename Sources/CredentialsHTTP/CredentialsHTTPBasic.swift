@@ -90,14 +90,13 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
         else {
             let options = Data.Base64DecodingOptions(rawValue: 0)
             
-            guard request.headers["Authorization"] != nil,
-                let authorizationHeader = request.headers["Authorization"]  else {
-                    onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
-                    return
+            guard let authorizationHeader = request.headers["Authorization"]  else {
+                onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
+                return
             }
 
             let authorizationHeaderComponents = authorizationHeader.components(separatedBy: " ")
-            guard authorizationHeaderComponents.count >= 2,
+            guard authorizationHeaderComponents.count == 2,
                 authorizationHeaderComponents[0] == "Basic",
                 let decodedData = Data(base64Encoded: authorizationHeaderComponents[1], options: options),
                 let userAuthorization = String(data: decodedData, encoding: .utf8) else {
