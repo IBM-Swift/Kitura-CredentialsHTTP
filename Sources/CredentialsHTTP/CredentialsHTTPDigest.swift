@@ -18,6 +18,7 @@ import Kitura
 import KituraNet
 import Credentials
 import Cryptor
+import LoggerAPI
 
 import Foundation
 
@@ -177,6 +178,7 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
                 splitRegex = try RegularExpressionType(pattern: ",(?=(?:[^\"]|\"[^\"]*\")*$)", options: [])
             }
             catch {
+                Log.error("Failed to create regular expressions used to parse Digest Authorization header")
                 exit(1)
             }
         }
@@ -229,9 +231,6 @@ public class CredentialsHTTPDigest : CredentialsPluginProtocol {
         var result = url.path
         if let query = url.query {
             result = result + "?" + query
-        }
-        if let fragment = url.fragment {
-            result = result + "#" + fragment
         }
         return result
     }
