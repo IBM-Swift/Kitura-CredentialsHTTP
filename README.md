@@ -24,15 +24,15 @@ The latest version of Kitura-CredentialsHTTP requires **Swift 3.0**. You can dow
 ## API
 
 ### Basic authentication
-To create an instance of CredentialsHTTPBasic plugin, a `UserProfileLoader` function and an optional realm should be passed to the constructor:
+To create an instance of `CredentialsHTTPBasic` plugin, use the `verifyPassword` initializer that takes an optional realm:
 ```swift
-public init (userProfileLoader: UserProfileLoader, realm: String?=nil)
+public init (verifyPassword: @escaping VerifyPassword, realm: String?=nil)
 ```
-`userProfileLoader` function should be of type:
+the `verifyPassword` argument is a typealias:
 ```swift
-public typealias UserProfileLoader = (userId: String, callback: (userProfile: UserProfile?, password: String?)->Void) -> Void
+public typealias VerifyPassword = (userId: String, password: String, callback: @escaping (UserProfile?) -> Void) -> Void
 ```
-It receives user id, and calls `callback` with `UserProfile` instance and password that correspond to the user id, or `nil` if such user id doesn't exist.
+It receives a userId and password, and it should invoke the `callback` with a `UserProfile` if the user exists or `nil` if the user doesn't exist.
 
 ### Digest authentication
 CredentialsHTTPDigest initialization is similar to CredentialsHTTPBasic. In addition, an optional opaque value can be passed to the constructor.
@@ -42,7 +42,7 @@ CredentialsHTTPDigest initialization is similar to CredentialsHTTPBasic. In addi
 This example shows how to use this plugin to authenticate requests with HTTP Basic authentication. HTTP Digest authentication is similar.
 <br>
 
-First create an instance of `Credentials` and an instance of `CredentialsHTTPBasic` plugin, supplying a `UserProfileLoader` function:
+First create an instance of `Credentials` and an instance of `CredentialsHTTPBasic` plugin, supplying a `verifyPassword` function:
 
 ```swift
 import Credentials
@@ -50,12 +50,11 @@ import CredentialsHTTP
 
 let credentials = Credentials()
 let users = ["John" : "12345", "Mary" : "qwerasdf"]
-let basicCredentials = CredentialsHTTPBasic(userProfileLoader: { userId, callback in
-    if let storedPassword = users[userId] {
-        callback(userProfile: UserProfile(id: userId, displayName: userId, provider: "HTTPBasic"), password: storedPassword)
-    }
-    else {
-        callback(userProfile: nil, password: nil)
+let basicCredentials = CredentialsHTTPBasic(verifyPassword: { userId, password, callback in
+    if let storedPassword = users[userId], storedPassword == password {
+        callback(UserProfile(id: userId, displayName: userId, provider: "HTTPBasic"))
+    } else {
+        callback(nil)
     }
 })
 ```
@@ -63,7 +62,6 @@ Now register the plugin:
 ```swift
 credentials.register(plugin: basicCredentials)
 ```
-
 Connect `credentials` middleware to profile requests:
 ```swift
 router.all("/profile", middleware: credentials)
