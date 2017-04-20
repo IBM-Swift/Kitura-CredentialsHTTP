@@ -24,15 +24,16 @@ The latest version of Kitura-CredentialsHTTP requires **Swift 3.0**. You can dow
 ## API
 
 ### Basic authentication
-To create an instance of `CredentialsHTTPBasic` plugin, use the `verifyPassword` initializer that takes an optional realm:
+To create an instance of `CredentialsHTTPBasic` plugin, a `VerifyPassword` function and an optional realm should be passed to the constructor:
 ```swift
 public init (verifyPassword: @escaping VerifyPassword, realm: String?=nil)
 ```
-the `verifyPassword` argument is a typealias:
+`verifyPassword` is a function of type:
 ```swift
+/// Type alias for the callback that verifies the userId and password.
+/// If the authentication pair verifies, then a user profile is returned.
 public typealias VerifyPassword = (userId: String, password: String, callback: @escaping (UserProfile?) -> Void) -> Void
 ```
-It receives a userId and password, and it should invoke the `callback` with a `UserProfile` if the user exists or `nil` if the user doesn't exist.
 
 ### Digest authentication
 CredentialsHTTPDigest initialization is similar to CredentialsHTTPBasic. In addition, an optional opaque value can be passed to the constructor.
