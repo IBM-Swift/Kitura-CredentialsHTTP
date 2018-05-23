@@ -25,7 +25,7 @@ public final class UserHTTPBasic : TypedCredentialsPluginProtocol {
     public static var options: [String : Any] = [:]
     public static var realm: String = "User"
     
-    public static var name: String = "HTTP Basic"
+    public static var pluginName: String = "HTTP Basic"
     
     public static var usersCache: NSCache<NSString, BaseCacheElement>? = nil
     
