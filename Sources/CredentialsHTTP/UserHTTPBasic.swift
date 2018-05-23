@@ -68,7 +68,8 @@ public final class UserHTTPBasic : TypedCredentialsPluginProtocol {
             let options = Data.Base64DecodingOptions(rawValue: 0)
             
             guard let authorizationHeader = request.headers["Authorization"]  else {
-                onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + realm + "\""])
+                // TODO: this should be onPass, changed for demo
+                onFailure(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + realm + "\""])
                 return
             }
             
@@ -77,7 +78,8 @@ public final class UserHTTPBasic : TypedCredentialsPluginProtocol {
                 authorizationHeaderComponents[0] == "Basic",
                 let decodedData = Data(base64Encoded: authorizationHeaderComponents[1], options: options),
                 let userAuthorization = String(data: decodedData, encoding: .utf8) else {
-                    onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + realm + "\""])
+                    // TODO: this should be onPass, changed for demo
+                    onFailure(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + realm + "\""])
                     return
             }
             
