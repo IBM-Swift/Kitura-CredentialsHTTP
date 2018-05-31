@@ -20,22 +20,13 @@ import Credentials
 
 import Foundation
 
-public final class UserHTTPBasic : TypedCredentialsPluginProtocol {
+public final class UserHTTPBasic : TypeSafeCredentialsPluginProtocol {
     
-    public static var options: [String : Any] = [:]
     public static var realm: String = "User"
-    
-    public static var pluginName: String = "HTTP Basic"
     
     public static var usersCache: NSCache<NSString, BaseCacheElement>? = nil
     
-    public static var redirecting: Bool = false
-    
     public static var verifyPassword: ((String, String, @escaping (UserHTTPBasic?) -> Void) -> Void)? = nil
-    
-    public static func describe() -> String {
-        return "HTTPBasic"
-    }
     
     public let id: String
     public let provider: String

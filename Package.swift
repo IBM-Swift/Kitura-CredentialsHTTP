@@ -28,8 +28,7 @@ let package = Package(
         )
     ],    
     dependencies: [
-        .package(url: "git@github.ibm.com:Andrew-Lees11/Kitura-Credentials.git", .branch("typeSafeMiddleware")),
-      //.package(url: "https://github.com/IBM-Swift/Kitura-Credentials.git", from: "2.0.0"),
+      .package(url: "https://github.com/IBM-Swift/Kitura-Credentials.git", .branch("typeSafeMiddleware")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
