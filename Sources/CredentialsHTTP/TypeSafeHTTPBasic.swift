@@ -22,12 +22,6 @@ import Foundation
 
 public protocol TypeSafeHTTPBasic : TypeSafeCredentials {
     
-    /// The unique identifier for the authentication providers
-    var id: String { get }
-    
-    /// The name of the authentication provider (defaults to "Facebook")
-    var provider: String { get }
-    
     /// The realm for which these credentials are valid (defaults to "User")
     static var realm: String { get }
     
@@ -44,16 +38,16 @@ public protocol TypeSafeHTTPBasic : TypeSafeCredentials {
     /// - Parameter onFailure: The closure to invoke in the case of an authentication failure.
     /// - Parameter onPass: The closure to invoke when the plugin doesn't recognize the
     ///                     authentication data in the request.
-    static func authenticate(request: RouterRequest, response: RouterResponse, onSuccess: @escaping (Self) -> Void, onFailure: @escaping (HTTPStatusCode?, [String : String]?) -> Void, onPass: @escaping (HTTPStatusCode?, [String : String]?) -> Void, inProgress: @escaping () -> Void)
+    static func authenticate(request: RouterRequest, response: RouterResponse, onSuccess: @escaping (Self) -> Void, onFailure: @escaping (HTTPStatusCode?, [String : String]?) -> Void, onPass: @escaping (HTTPStatusCode?, [String : String]?) -> Void)
 }
 
 extension TypeSafeHTTPBasic {
     
     public var provider: String {
-        return "Facebook"
+        return "HTTPBasic"
     }
     
-    public var realm: String {
+    public static var realm: String {
         return "User"
     }
     
@@ -67,7 +61,7 @@ extension TypeSafeHTTPBasic {
     /// - Parameter onFailure: The closure to invoke in the case of an authentication failure.
     /// - Parameter onPass: The closure to invoke when the plugin doesn't recognize the
     ///                     authentication data in the request.
-    public static func authenticate(request: RouterRequest, response: RouterResponse, onSuccess: @escaping (Self) -> Void, onFailure: @escaping (HTTPStatusCode?, [String : String]?) -> Void, onPass: @escaping (HTTPStatusCode?, [String : String]?) -> Void, inProgress: @escaping () -> Void) {
+    public static func authenticate(request: RouterRequest, response: RouterResponse, onSuccess: @escaping (Self) -> Void, onFailure: @escaping (HTTPStatusCode?, [String : String]?) -> Void, onPass: @escaping (HTTPStatusCode?, [String : String]?) -> Void) {
         
         let userid: String
         let password: String
