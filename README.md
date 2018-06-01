@@ -56,6 +56,42 @@ CredentialsHTTPDigest initialization is similar to CredentialsHTTPBasic. In addi
 
 ## Example
 
+### Codable routing
+
+First create a struct or final class that conforms to `TypeSafeHTTPBasic`,
+adding any instance variables which you will initialise in verifyPassword:
+
+```swift
+import CredentialsHTTP
+
+public struct MyBasicAuth: TypeSafeHTTPBasic {
+
+    public let id: String
+
+    public static let users = ["John" : "12345", "Mary" : "qwerasdf"]
+
+    public static var verifyPassword: ((String, String, @escaping (MyBasicAuth?) -> Void) -> Void) =
+    { userId, password, callback in
+        if let storedPassword = users[userId], storedPassword == password {
+            callback(MyBasicAuth(id: userId))
+        } else {
+            callback(nil)
+        }
+    }
+
+}
+```
+
+Add authentication to routes by adding your `TypeSafeHTTPBasic` object, as a `TypeSafeMiddleware`, to your codable routes:
+
+```swift
+router.get("/authedFruits") { (userProfile: MyBasicAuth, respondWith: (MyBasicAuth?, RequestError?) -> Void) in
+   print("authenticated \(userProfile.id) using \(userProfile.provider)")
+   respondWith(userProfile, nil)
+}
+```
+
+### Raw routing
 This example shows how to use this plugin to authenticate requests with HTTP Basic authentication. HTTP Digest authentication is similar.
 <br>
 

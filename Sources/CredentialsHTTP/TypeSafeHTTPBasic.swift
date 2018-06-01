@@ -35,6 +35,8 @@ import Foundation
  
     public static let users = ["John" : "12345", "Mary" : "qwerasdf"]
  
+    public static let realm = "Login message"
+ 
     public static var verifyPassword: ((String, String, @escaping (MyHTTPBasic?) -> Void) -> Void) =
         { userId, password, callback in
             if let storedPassword = users[userId], storedPassword == password {
