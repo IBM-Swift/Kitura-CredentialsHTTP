@@ -27,18 +27,7 @@ public protocol TypeSafeHTTPBasic : TypeSafeCredentials {
     
     // The closure which takes a username and password and returns a TypeSafeHTTPBasic instance on success or nil on failure.
     static var verifyPassword: ((String, String, @escaping (Self?) -> Void) -> Void) { get }
-    
-    /// Authenticate incoming request using HTTP Basic authentication.
-    ///
-    /// - Parameter request: The `RouterRequest` object used to get information
-    ///                     about the request.
-    /// - Parameter response: The `RouterResponse` object used to respond to the
-    ///                       request.
-    /// - Parameter onSuccess: The closure to invoke in the case of successful authentication.
-    /// - Parameter onFailure: The closure to invoke in the case of an authentication failure.
-    /// - Parameter onPass: The closure to invoke when the plugin doesn't recognize the
-    ///                     authentication data in the request.
-    static func authenticate(request: RouterRequest, response: RouterResponse, onSuccess: @escaping (Self) -> Void, onFailure: @escaping (HTTPStatusCode?, [String : String]?) -> Void, onPass: @escaping (HTTPStatusCode?, [String : String]?) -> Void)
+
 }
 
 extension TypeSafeHTTPBasic {
