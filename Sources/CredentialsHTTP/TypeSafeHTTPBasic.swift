@@ -21,7 +21,12 @@ import Credentials
 import Foundation
 
 /**
- A `TypeSafeCredentials` plugin for HTTP basic authentication. This protocol will be implemented by a Swift object defined by the user. The plugin must implement a `verifyPassword` function which takes a username and password as input and returns an instance of `Self` on success or `nil` on failure. This instance must contain the authentication `provider` (defaults to "HTTPBasic") and an `id`, uniquely identifying the user. The users object can then be used in TypeSafeMiddlware routes to authenticate with HTTP basic.
+ A `TypeSafeCredentials` plugin for HTTP basic authentication.
+ This protocol will be implemented by a Swift object defined by the user.
+ The plugin must implement a `verifyPassword` function which takes a username and password as input
+ and returns an instance of `Self` on success or `nil` on failure.
+ This instance must contain the authentication `provider` (defaults to "HTTPBasic") and an `id`, uniquely identifying the user.
+ The users object can then be used in TypeSafeMiddlware routes to authenticate with HTTP basic.
  ### Usage Example: ###
  ```swift
  public struct MyHTTPBasic: TypeSafeHTTPBasic {
