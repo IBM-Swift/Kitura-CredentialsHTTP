@@ -85,9 +85,9 @@ extension TypeSafeHTTPBasic {
     ///                       request.
     /// - Parameter onSuccess: The closure to invoke in the case of successful authentication.
     /// - Parameter onFailure: The closure to invoke in the case of an authentication failure.
-    /// - Parameter onPass: The closure to invoke when the plugin doesn't recognize the
+    /// - Parameter onSkip: The closure to invoke when the plugin doesn't recognize the
     ///                     authentication data in the request.
-    public static func authenticate(request: RouterRequest, response: RouterResponse, onSuccess: @escaping (Self) -> Void, onFailure: @escaping (HTTPStatusCode?, [String : String]?) -> Void, onPass: @escaping (HTTPStatusCode?, [String : String]?) -> Void) {
+    public static func authenticate(request: RouterRequest, response: RouterResponse, onSuccess: @escaping (Self) -> Void, onFailure: @escaping (HTTPStatusCode?, [String : String]?) -> Void, onSkip: @escaping (HTTPStatusCode?, [String : String]?) -> Void) {
         
         let userid: String
         let password: String
@@ -97,7 +97,7 @@ extension TypeSafeHTTPBasic {
         }
         else {
             guard let authorizationHeader = request.headers["Authorization"]  else {
-                return onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + realm + "\""])
+                return onSkip(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + realm + "\""])
             }
             
             let authorizationHeaderComponents = authorizationHeader.components(separatedBy: " ")
@@ -105,7 +105,7 @@ extension TypeSafeHTTPBasic {
                 authorizationHeaderComponents[0] == "Basic",
                 let decodedData = Data(base64Encoded: authorizationHeaderComponents[1], options: Data.Base64DecodingOptions(rawValue: 0)),
                 let userAuthorization = String(data: decodedData, encoding: .utf8) else {
-                    return onPass(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + realm + "\""])
+                    return onSkip(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + realm + "\""])
             }
             let credentials = userAuthorization.components(separatedBy: ":")
             guard credentials.count >= 2 else {
