@@ -20,22 +20,54 @@ import Credentials
 
 import Foundation
 
+/**
+ A `TypeSafeCredentials` plugin for HTTP basic authentication. This protocol will be implemented by a Swift object defined by the user. The plugin must implement a `verifyPassword` function which takes a username and password as input and returns an instance of `Self` on success or `nil` on failure. This instance must contain the authentication `provider` (defaults to "HTTPBasic") and an `id`, uniquely identifying the user. The users object can then be used in TypeSafeMiddlware routes to authenticate with HTTP basic.
+ ### Usage Example: ###
+ ```swift
+ public struct MyHTTPBasic: TypeSafeHTTPBasic {
+ 
+    public var id: String
+ 
+    public static let users = ["John" : "12345", "Mary" : "qwerasdf"]
+ 
+    public static var verifyPassword: ((String, String, @escaping (MyHTTPBasic?) -> Void) -> Void) =
+        { userId, password, callback in
+            if let storedPassword = users[userId], storedPassword == password {
+                callback(MyHTTPBasic(id: userId))
+            } else {
+                callback(nil)
+            }
+        }
+ }
+ 
+ struct User: Codable {
+    let name: String
+ }
+ 
+ router.get("/authedFruits") { (authedUser: MyHTTPBasic, respondWith: (User?, RequestError?) -> Void) in
+    let user = User(name: authedUser.id)
+    respondWith(user, nil)
+ }
+ ```
+ */
 public protocol TypeSafeHTTPBasic : TypeSafeCredentials {
     
     /// The realm for which these credentials are valid (defaults to "User")
     static var realm: String { get }
     
-    // The closure which takes a username and password and returns a TypeSafeHTTPBasic instance on success or nil on failure.
+    /// The closure which takes a username and password and returns a TypeSafeHTTPBasic instance on success or nil on failure.
     static var verifyPassword: ((String, String, @escaping (Self?) -> Void) -> Void) { get }
 
 }
 
 extension TypeSafeHTTPBasic {
     
+    /// The name of the authentication provider (defaults to "HTTPBasic")
     public var provider: String {
         return "HTTPBasic"
     }
     
+    /// The realm for which these credentials are valid (defaults to "User")
     public static var realm: String {
         return "User"
     }
