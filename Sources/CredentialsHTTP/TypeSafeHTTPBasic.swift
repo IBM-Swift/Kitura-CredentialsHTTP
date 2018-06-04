@@ -37,14 +37,13 @@ import Foundation
  
     public static let realm = "Login message"
  
-    public static var verifyPassword: ((String, String, @escaping (MyHTTPBasic?) -> Void) -> Void) =
-        { userId, password, callback in
-            if let storedPassword = users[userId], storedPassword == password {
-                callback(MyHTTPBasic(id: userId))
-            } else {
-                callback(nil)
-            }
+    public static func verifyPassword(username: String, password: String, callback: @escaping (TestHTTPBasic?) -> Void) {
+        if let storedPassword = users[username], storedPassword == password {
+            callback(TestHTTPBasic(id: username))
+        } else {
+            callback(nil)
         }
+    }
  }
  
  struct User: Codable {
@@ -62,7 +61,7 @@ public protocol TypeSafeHTTPBasic : TypeSafeCredentials {
     /// The realm for which these credentials are valid (defaults to "User")
     static var realm: String { get }
     
-    /// The closure which takes a username and password and returns a TypeSafeHTTPBasic instance on success or nil on failure.
+    /// The function that takes a username, a password and a callback which accepts a TypeSafeHTTPBasic instance on success or nil on failure.
     static func verifyPassword(username: String, password: String, callback: @escaping (Self?) -> Void) -> Void
     
 }
