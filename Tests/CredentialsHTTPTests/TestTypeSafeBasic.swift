@@ -119,10 +119,9 @@ class TestTypeSafeBasic : XCTestCase {
 
         public static let realm = "test"
 
-        public static var verifyPassword: ((String, String, @escaping (TestHTTPBasic?) -> Void) -> Void) =
-        { userId, password, callback in
-            if let storedPassword = users[userId], storedPassword == password {
-                callback(TestHTTPBasic(id: userId))
+        public static func verifyPassword(username: String, password: String, callback: @escaping (TestHTTPBasic?) -> Void) {
+            if let storedPassword = users[username], storedPassword == password {
+                callback(TestHTTPBasic(id: username))
             } else {
                 callback(nil)
             }
