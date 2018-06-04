@@ -33,7 +33,7 @@ import Foundation
  
     public var id: String
  
-    public static let users = ["John" : "12345", "Mary" : "qwerasdf"]
+    static let users = ["John" : "12345", "Mary" : "qwerasdf"]
  
     public static let realm = "Login message"
  
