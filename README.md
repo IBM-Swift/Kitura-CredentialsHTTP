@@ -70,15 +70,13 @@ public struct MyBasicAuth: TypeSafeHTTPBasic {
 
     static let users = ["John" : "12345", "Mary" : "qwerasdf"]
 
-    public static var verifyPassword: ((String, String, @escaping (MyBasicAuth?) -> Void) -> Void) =
-    { userId, password, callback in
-        if let storedPassword = users[userId], storedPassword == password {
-            callback(MyBasicAuth(id: userId))
+    public static func verifyPassword(username: String, password: String, callback: @escaping (TestHTTPBasic?) -> Void) {
+        if let storedPassword = users[username], storedPassword == password {
+            callback(TestHTTPBasic(id: username))
         } else {
             callback(nil)
         }
     }
-
 }
 ```
 

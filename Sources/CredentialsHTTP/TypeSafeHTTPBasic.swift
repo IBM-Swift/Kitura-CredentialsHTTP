@@ -63,8 +63,8 @@ public protocol TypeSafeHTTPBasic : TypeSafeCredentials {
     static var realm: String { get }
     
     /// The closure which takes a username and password and returns a TypeSafeHTTPBasic instance on success or nil on failure.
-    static var verifyPassword: ((String, String, @escaping (Self?) -> Void) -> Void) { get }
-
+    static func verifyPassword(username: String, password: String, callback: @escaping (Self?) -> Void) -> Void
+    
 }
 
 extension TypeSafeHTTPBasic {
@@ -116,7 +116,7 @@ extension TypeSafeHTTPBasic {
             password = credentials[1]
         }
         
-        verifyPassword(userid, password) { selfInstance in
+        verifyPassword(username: userid, password: password) { selfInstance in
             if let selfInstance = selfInstance {
                 onSuccess(selfInstance)
             } else {
