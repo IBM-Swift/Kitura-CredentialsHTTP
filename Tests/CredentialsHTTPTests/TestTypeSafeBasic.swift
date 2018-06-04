@@ -28,21 +28,23 @@ class TestTypeSafeBasic : XCTestCase {
     static var allTests : [(String, (TestTypeSafeBasic) -> () throws -> Void)] {
         return [
             ("testTypeSafeNoCredentials", testTypeSafeNoCredentials),
+            ("testTypeSafeBadCredentials", testTypeSafeBadCredentials),
+            ("testTypeSafeBasic", testTypeSafeBasic),
         ]
     }
-    
+
     override func setUp() {
         doSetUp()
     }
-    
+
     override func tearDown() {
         doTearDown()
     }
-    
+
     let host = "127.0.0.1"
-    
+
     let router = TestTypeSafeBasic.setupTypeSafeRouter()
-    
+
     func testTypeSafeNoCredentials() {
         performServerTest(router: router) { expectation in
             self.performRequest(method: "get", host: self.host, path: "/private/typesafebasic", callback: {response in
@@ -53,7 +55,7 @@ class TestTypeSafeBasic : XCTestCase {
             })
         }
     }
-    
+
     func testTypeSafeBadCredentials() {
         
         performServerTest(router: router) { expectation in
@@ -64,7 +66,7 @@ class TestTypeSafeBasic : XCTestCase {
                 expectation.fulfill()
             }, headers: ["Authorization" : "Basic QWxhZGRpbjpPcGVuU2VzYW1l"])
         }
-        
+
         performServerTest(router: router) { expectation in
             self.performRequest(method: "get", path:"/private/typesafebasic", callback: {response in
                 XCTAssertNotNil(response, "ERROR!!! ClientRequest response object was nil")
@@ -74,7 +76,7 @@ class TestTypeSafeBasic : XCTestCase {
             }, headers: ["Authorization" : "Basic"])
         }
     }
-    
+
     func testTypeSafeBasic() {
 
         performServerTest(router: router) { expectation in
@@ -84,34 +86,33 @@ class TestTypeSafeBasic : XCTestCase {
                 do {
                     let body = try response?.readString()
                     XCTAssertEqual(body,"{\"name\":\"Mary\",\"provider\":\"HTTPBasic\"}")
-                }
-                catch{
+                } catch {
                     XCTFail("No response body")
                 }
                 expectation.fulfill()
             }, headers: ["Authorization" : "Basic TWFyeTpxd2VyYXNkZg=="])
         }
     }
-    
+
     static func setupTypeSafeRouter() -> Router {
         let router = Router()
-        
+
         router.get("/private/typesafebasic") { (authedUser: TestHTTPBasic, respondWith: (User?, RequestError?) -> Void) in
             let user = User(name: authedUser.id, provider: authedUser.provider)
             respondWith(user, nil)
         }
-        
+
         return router
     }
-    
+
     public struct TestHTTPBasic: TypeSafeHTTPBasic {
-        
+
         public let id: String
-        
+
         static let users = ["John" : "12345", "Mary" : "qwerasdf"]
-        
+
         public static let realm = "test"
-        
+
         public static var verifyPassword: ((String, String, @escaping (TestHTTPBasic?) -> Void) -> Void) =
         { userId, password, callback in
             if let storedPassword = users[userId], storedPassword == password {
@@ -121,7 +122,7 @@ class TestTypeSafeBasic : XCTestCase {
             }
         }
     }
-    
+
     struct User: Codable {
         let name: String
         let provider: String

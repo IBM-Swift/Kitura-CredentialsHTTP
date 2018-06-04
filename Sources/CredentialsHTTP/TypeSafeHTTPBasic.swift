@@ -96,8 +96,7 @@ extension TypeSafeHTTPBasic {
         if let requestUser = request.urlURL.user, let requestPassword = request.urlURL.password {
             userid = requestUser
             password = requestPassword
-        }
-        else {
+        } else {
             guard let authorizationHeader = request.headers["Authorization"]  else {
                 return onSkip(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + realm + "\""])
             }
@@ -111,8 +110,7 @@ extension TypeSafeHTTPBasic {
             }
             let credentials = userAuthorization.components(separatedBy: ":")
             guard credentials.count >= 2 else {
-                onFailure(.badRequest, nil)
-                return
+                return onFailure(.badRequest, nil)
             }
             userid = credentials[0]
             password = credentials[1]
@@ -121,8 +119,7 @@ extension TypeSafeHTTPBasic {
         verifyPassword(userid, password) { selfInstance in
             if let selfInstance = selfInstance {
                 onSuccess(selfInstance)
-            }
-            else {
+            } else {
                 onFailure(.unauthorized, ["WWW-Authenticate" : "Basic realm=\"" + self.realm + "\""])
             }
         }
