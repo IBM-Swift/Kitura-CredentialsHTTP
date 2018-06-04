@@ -68,7 +68,7 @@ public struct MyBasicAuth: TypeSafeHTTPBasic {
 
     public let id: String
 
-    public static let users = ["John" : "12345", "Mary" : "qwerasdf"]
+    static let users = ["John" : "12345", "Mary" : "qwerasdf"]
 
     public static var verifyPassword: ((String, String, @escaping (MyBasicAuth?) -> Void) -> Void) =
     { userId, password, callback in
