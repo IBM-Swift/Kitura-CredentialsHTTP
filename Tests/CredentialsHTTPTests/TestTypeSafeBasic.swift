@@ -84,12 +84,13 @@ class TestTypeSafeBasic : XCTestCase {
                 XCTAssertNotNil(response, "ERROR!!! ClientRequest response object was nil")
                 XCTAssertEqual(response?.statusCode, HTTPStatusCode.OK, "HTTP Status code was \(String(describing: response?.statusCode))")
                 do {
-                    guard let stringBody = try response?.readString() else {
-                        return XCTFail("Did not receive a body")
+                    guard let stringBody = try response?.readString(),
+                          let jsonData = stringBody.data(using: .utf8)
+                    else {
+                        return XCTFail("Did not receive a JSON body")
                     }
-                    let json = try JSONSerialization.data(withJSONObject: stringBody, options: [])
                     let decoder = JSONDecoder()
-                    let body = try decoder.decode(User.self, from: json)
+                    let body = try decoder.decode(User.self, from: jsonData)
                     XCTAssertEqual(body, User(name: "Mary", provider: "HTTPBasic"))
                 } catch {
                     XCTFail("No response body")
@@ -131,5 +132,11 @@ class TestTypeSafeBasic : XCTestCase {
     struct User: Codable, Equatable {
         let name: String
         let provider: String
+        
+        static func == (lhs: User, rhs: User) -> Bool {
+            return lhs.name == rhs.name && lhs.provider == rhs.provider
+        }
     }
+    
+    
 }
