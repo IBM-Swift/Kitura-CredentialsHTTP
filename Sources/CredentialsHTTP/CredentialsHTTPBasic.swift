@@ -114,7 +114,7 @@ public class CredentialsHTTPBasic : CredentialsPluginProtocol {
         }
         
         let userid = credentials[0]
-        let password = credentials[1]
+        let password = credentials[1...].joined(separator: ":")
         
         if let userProfileLoader = self.userProfileLoader {
             userProfileLoader(userid) { userProfile, storedPassword in
