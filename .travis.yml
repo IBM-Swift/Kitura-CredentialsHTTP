@@ -36,11 +36,13 @@ matrix:
       sudo: required
       services: docker
       env: DOCKER_IMAGE=swift:5.1
-    - os: linux
-      dist: xenial
-      sudo: required
-      services: docker
-      env: DOCKER_IMAGE=swift:5.1 SWIFT_SNAPSHOT=$SWIFT_DEVELOPMENT_SNAPSHOT
+      # Disabling snapshot due to crash during compilation (2019-09-30-a)
+      # TODO: Re-enable once compiler crash is resolved
+      #    - os: linux
+      #      dist: xenial
+      #      sudo: required
+      #      services: docker
+      #      env: DOCKER_IMAGE=swift:5.1 SWIFT_SNAPSHOT=$SWIFT_DEVELOPMENT_SNAPSHOT
     - os: osx
       osx_image: xcode9.2
       sudo: required
@@ -60,10 +62,12 @@ matrix:
     - os: osx
       osx_image: xcode11
       sudo: required
-    - os: osx
-      osx_image: xcode11
-      sudo: required
-      env: SWIFT_SNAPSHOT=$SWIFT_DEVELOPMENT_SNAPSHOT
+      # Disabling snapshot due to crash during compilation (2019-09-30-a)
+      # TODO: Re-enable once compiler crash is resolved
+      #    - os: osx
+      #      osx_image: xcode11
+      #      sudo: required
+      #      env: SWIFT_SNAPSHOT=$SWIFT_DEVELOPMENT_SNAPSHOT
 
 before_install:
   - git clone https://github.com/IBM-Swift/Package-Builder.git
